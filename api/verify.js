@@ -1,66 +1,61 @@
 const { kv } = require('@vercel/kv');
 
 module.exports = async function handler(req, res) {
-  console.log('[verify] Received request, method:', req.method);
-
   if (req.method !== 'POST') {
-    console.log('[verify] Rejected: method not allowed');
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { key } = req.body || {};
-  console.log('[verify] Key received:', key ? key.substring(0, 4) + '...' : 'none');
+  const rawKey = (req.body && req.body.key) || '';
+  const key = String(rawKey).trim();
+  const debug = {
+    rawKey: rawKey,
+    trimmedKey: key,
+    kvUrlSet: !!process.env.KV_REST_API_URL,
+    kvTokenSet: !!process.env.KV_REST_API_TOKEN,
+    whitelistKey: 'valid:' + key,
+    whitelistValue: null,
+    activationKey: 'activation:' + key,
+    activationValue: null,
+  };
 
-  if (!key || typeof key !== 'string') {
-    console.log('[verify] Rejected: missing key');
-    return res.status(400).json({ error: 'Missing key' });
+  if (!key) {
+    return res.status(400).json({ valid: false, reason: 'missing_key', debug: debug });
   }
 
   try {
-    // Check KV_REST_API_URL env var
-    console.log('[verify] KV_REST_API_URL set:', !!process.env.KV_REST_API_URL);
-    console.log('[verify] KV_REST_API_TOKEN set:', !!process.env.KV_REST_API_TOKEN);
-
     // Step 1: Whitelist check
-    console.log('[verify] Querying valid:' + key);
-    const whitelisted = await kv.get('valid:' + key);
-    console.log('[verify] Whitelist result:', whitelisted);
+    const whitelisted = await kv.get(debug.whitelistKey);
+    debug.whitelistValue = whitelisted;
+    console.log('[verify] whitelist lookup:', debug.whitelistKey, '=', whitelisted);
 
     if (whitelisted === null) {
-      console.log('[verify] Key not in whitelist, rejecting');
-      return res.status(200).json({ valid: false, reason: 'invalid_key' });
+      return res.status(200).json({ valid: false, reason: 'invalid_key', debug: debug });
     }
 
     // Step 2: Activation check
-    console.log('[verify] Querying activation:' + key);
-    const activation = await kv.get('activation:' + key);
-    console.log('[verify] Activation result:', activation);
+    const activation = await kv.get(debug.activationKey);
+    debug.activationValue = activation;
+    console.log('[verify] activation lookup:', debug.activationKey, '=', activation);
 
     const now = Date.now();
 
     if (activation === null) {
-      console.log('[verify] First activation, setting timestamp:', now);
-      await kv.set('activation:' + key, now);
-      await kv.expire('activation:' + key, 60 * 60 * 24 * 30);
-      console.log('[verify] Activation saved successfully');
-      return res.status(200).json({ valid: true, firstUse: true });
+      await kv.set(debug.activationKey, now);
+      await kv.expire(debug.activationKey, 60 * 60 * 24 * 30);
+      console.log('[verify] first activation saved');
+      return res.status(200).json({ valid: true, firstUse: true, debug: debug });
     } else {
       const elapsed = now - activation;
-      const hours = elapsed / (1000 * 60 * 60);
-      console.log('[verify] Elapsed hours:', hours.toFixed(2));
-
       if (elapsed <= 24 * 60 * 60 * 1000) {
-        console.log('[verify] Within 24h, valid');
-        return res.status(200).json({ valid: true });
+        return res.status(200).json({ valid: true, debug: debug });
       } else {
-        console.log('[verify] Expired');
-        return res.status(200).json({ valid: false, reason: 'expired' });
+        return res.status(200).json({ valid: false, reason: 'expired', debug: debug });
       }
     }
   } catch (error) {
-    console.error('[verify] Error:', error);
-    console.error('[verify] Error message:', error.message);
-    console.error('[verify] Error stack:', error.stack);
-    return res.status(200).json({ valid: false, reason: 'kv_error', detail: error.message });
+    console.error('[verify] Error:', error.message);
+    debug.errorMessage = error.message;
+    debug.errorStack = error.stack;
+    return res.status(200).json({ valid: false, reason: 'kv_error', detail: error.message, debug: debug });
   }
 };
