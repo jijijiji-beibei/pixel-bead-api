@@ -11,6 +11,13 @@ module.exports = async function handler(req, res) {
   }
 
   try {
+    // Step 1: Whitelist check
+    const whitelisted = await kv.get('valid:' + key);
+    if (whitelisted === null) {
+      return res.status(200).json({ valid: false, reason: 'invalid_key' });
+    }
+
+    // Step 2: Activation check
     const activation = await kv.get('activation:' + key);
     const now = Date.now();
 
