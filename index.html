@@ -233,7 +233,7 @@ var ro=$('resultOriginal'),rb2=$('resultBead');
 var mg=$('materialGrid'),ms=$('materialSection'),rs=$('resultStats');
 var rgs=$('resultGridSize'),rtb=$('resultTotalBeads'),rcc=$('resultColorCount');
 var tt=$('toast');
-var src=null,bcd=null,cbd=null,iv=false,verifyTimer=null;var API_VERIFY="https://你的域名/api/verify";
+var src=null,bcd=null,cbd=null,iv=false,verifyTimer=null;var API_VERIFY=window.location.hostname===""||window.location.protocol==="file:"?"https://pixel-bead-api-rp8a.vercel.app/api/verify":"/api/verify";
 var tmr=null;
 function st(m,d){d=d||2500;tt.textContent=m;tt.classList.add('show');clearTimeout(tmr);tmr=setTimeout(function(){tt.classList.remove('show')},d)}
 function sv(v){document.querySelectorAll('.view').forEach(function(x){x.classList.remove('active')});v.classList.add('active')}
