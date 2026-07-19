@@ -1,5 +1,4 @@
 {
-  "version": 2,
   "functions": {
     "api/verify.js": {
       "maxDuration": 10
