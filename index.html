@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧸 拼豆坐标图生成器 - Perler Bead Pattern Maker</title>
+<title>馃Ц 鎷艰眴鍧愭爣鍥剧敓鎴愬櫒 - Perler Bead Pattern Maker</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;display=swap" rel="stylesheet">
@@ -145,10 +145,10 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 </style>
 </head><body>
 <header class="header"><div class="header-inner">
-<div class="header-left"><div class="header-logo">🧸</div><div class="header-title">拼豆<span>坐标图</span>生成器</div></div>
+<div class="header-left"><div class="header-logo">馃Ц</div><div class="header-title">鎷艰眴<span>鍧愭爣鍥?/span>鐢熸垚鍣?/div></div>
 <div class="header-status">
-<span class="status-dot idle" id="authStatus"><span class="dot"></span>未验证</span>
-<span class="status-dot idle" id="fileStatus"><span class="dot"></span>未上传</span>
+<span class="status-dot idle" id="authStatus"><span class="dot"></span>鏈獙璇?/span>
+<span class="status-dot idle" id="fileStatus"><span class="dot"></span>鏈笂浼?/span>
 </div></div></header>
 <div class="main-content">
 <div class="view active" id="viewUpload">
@@ -160,65 +160,65 @@ body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:1
 <polyline points="17 8 12 3 7 8"/>
 <line x1="12" y1="3" x2="12" y2="15"/>
 </svg></div>
-<div class="upload-text">点击上传或拖拽图片到此处</div>
-<div class="upload-hint">支持 JPG / PNG / WebP / GIF</div>
-<div class="upload-formats">建议使用清晰、对比度高的图片效果更佳</div>
-<button class="upload-browse-btn" id="browseBtn" type="button" onclick="document.getElementById('fileInput').click()">🌸 选择图片</button>
+<div class="upload-text">鐐瑰嚮涓婁紶鎴栨嫋鎷藉浘鐗囧埌姝ゅ</div>
+<div class="upload-hint">鏀寔 JPG / PNG / WebP / GIF</div>
+<div class="upload-formats">寤鸿浣跨敤娓呮櫚銆佸姣斿害楂樼殑鍥剧墖鏁堟灉鏇翠匠</div>
+<button class="upload-browse-btn" id="browseBtn" type="button" onclick="document.getElementById('fileInput').click()">馃尭 閫夋嫨鍥剧墖</button>
 <div class="upload-info" id="uploadInfo"></div>
 <img class="upload-preview" id="uploadPreview" alt="preview">
-<button class="remove-image" id="removeImageBtn">✕</button>
+<button class="remove-image" id="removeImageBtn">鉁?/button>
 </div>
 <div class="key-section">
-<div class="key-input-wrap"><label>🔑 验证密钥</label><input type="text" id="keyInput" placeholder="请输入密钥"><button class="btn btn-primary btn-sm" id="verifyKeyBtn">验证</button></div>
-<span class="key-status" id="keyStatus">🔒 未验证</span> <button class="btn btn-sm btn-outline" onclick="reVerify()" style="font-size:0.75em;padding:4px 10px">🔄</button>
+<div class="key-input-wrap"><label>馃攽 楠岃瘉瀵嗛挜</label><input type="text" id="keyInput" placeholder="璇疯緭鍏ュ瘑閽?><button class="btn btn-primary btn-sm" id="verifyKeyBtn">楠岃瘉</button></div>
+<span class="key-status" id="keyStatus">馃敀 鏈獙璇?/span> <button class="btn btn-sm btn-outline" onclick="reVerify()" style="font-size:0.75em;padding:4px 10px">馃攧</button>
 </div>
 <div class="action-bar center">
-<button class="btn btn-success" id="generateBtn" disabled>✨ 生成拼豆图案</button>
-<button class="btn btn-outline" id="resetBtn">🔄 重置</button>
+<button class="btn btn-success" id="generateBtn" disabled>鉁?鐢熸垚鎷艰眴鍥炬</button>
+<button class="btn btn-outline" id="resetBtn">馃攧 閲嶇疆</button>
 </div></div>
 
 <div class="params-panel"><div class="params-grid">
-<div class="param-group"><label>📏 网格宽度</label><div class="param-row"><input type="range" id="gridWidth" min="8" max="80" value="24"><span class="range-value" id="gridWidthVal">24</span></div></div>
-<div class="param-group"><label>📏 网格高度</label><div class="param-row"><input type="range" id="gridHeight" min="8" max="80" value="24"><span class="range-value" id="gridHeightVal">24</span></div></div>
-<div class="param-group"><label>🎨 最大颜色数</label><div class="param-row"><input type="range" id="maxColors" min="4" max="60" value="30"><span class="range-value" id="maxColorsVal">30</span></div></div>
-<div class="param-group"><label>🔲 背景透明</label><div class="toggle-group"><label class="toggle"><input type="checkbox" id="transparentBg"><span class="toggle-slider"></span></label><span id="transparentLabel" style="font-size:0.82em;color:var(--text-light)">关闭</span></div></div>
-<div class="param-group"><label>🔄 保持比例</label><div class="toggle-group"><label class="toggle"><input type="checkbox" id="keepAspect" checked><span class="toggle-slider"></span></label><span id="keepAspectLabel" style="font-size:0.82em;color:var(--text-light)">开启</span></div></div>
+<div class="param-group"><label>馃搹 缃戞牸瀹藉害</label><div class="param-row"><input type="range" id="gridWidth" min="8" max="80" value="24"><span class="range-value" id="gridWidthVal">24</span></div></div>
+<div class="param-group"><label>馃搹 缃戞牸楂樺害</label><div class="param-row"><input type="range" id="gridHeight" min="8" max="80" value="24"><span class="range-value" id="gridHeightVal">24</span></div></div>
+<div class="param-group"><label>馃帹 鏈€澶ч鑹叉暟</label><div class="param-row"><input type="range" id="maxColors" min="4" max="60" value="30"><span class="range-value" id="maxColorsVal">30</span></div></div>
+<div class="param-group"><label>馃敳 鑳屾櫙閫忔槑</label><div class="toggle-group"><label class="toggle"><input type="checkbox" id="transparentBg"><span class="toggle-slider"></span></label><span id="transparentLabel" style="font-size:0.82em;color:var(--text-light)">鍏抽棴</span></div></div>
+<div class="param-group"><label>馃攧 淇濇寔姣斾緥</label><div class="toggle-group"><label class="toggle"><input type="checkbox" id="keepAspect" checked><span class="toggle-slider"></span></label><span id="keepAspectLabel" style="font-size:0.82em;color:var(--text-light)">寮€鍚?/span></div></div>
 </div></div>
 
 <div class="view" id="viewResult">
 <div class="result-grid">
-<div class="result-card"><div class="result-card-header">🖼️ 原始图片<span class="badge badge-pink">Original</span></div><div class="result-card-body" id="resultOriginal"><div class="result-empty"><span class="icon">🌸</span><p>暂无图片</p></div><canvas id="resultOriginalCanvas" style="display:none"></canvas></div></div>
-<div class="result-card"><div class="result-card-header">🧩 拼豆坐标图<span class="badge badge-blue">Bead Map</span></div><div class="result-card-body" id="resultBead"><div class="result-empty"><span class="icon">🧸</span><p>请先生成图案</p></div><canvas id="resultBeadCanvas" style="display:none"></canvas><div class="loading-overlay" id="resultLoading"><div class="spinner"></div></div></div></div>
+<div class="result-card"><div class="result-card-header">馃柤锔?鍘熷鍥剧墖<span class="badge badge-pink">Original</span></div><div class="result-card-body" id="resultOriginal"><div class="result-empty"><span class="icon">馃尭</span><p>鏆傛棤鍥剧墖</p></div><canvas id="resultOriginalCanvas" style="display:none"></canvas></div></div>
+<div class="result-card"><div class="result-card-header">馃З 鎷艰眴鍧愭爣鍥?span class="badge badge-blue">Bead Map</span></div><div class="result-card-body" id="resultBead"><div class="result-empty"><span class="icon">馃Ц</span><p>璇峰厛鐢熸垚鍥炬</p></div><canvas id="resultBeadCanvas" style="display:none"></canvas><div class="loading-overlay" id="resultLoading"><div class="spinner"></div></div></div></div>
 </div>
-<div class="stats-bar" id="resultStats" style="display:none"><span>📐 尺寸: <strong id="resultGridSize">0×0</strong></span><span>🧮 总珠数: <strong id="resultTotalBeads">0</strong></span><span>🎨 颜色数: <strong id="resultColorCount">0</strong></span></div>
+<div class="stats-bar" id="resultStats" style="display:none"><span>馃搻 灏哄: <strong id="resultGridSize">0脳0</strong></span><span>馃М 鎬荤彔鏁? <strong id="resultTotalBeads">0</strong></span><span>馃帹 棰滆壊鏁? <strong id="resultColorCount">0</strong></span></div>
 <div class="material-section" id="materialSection" style="display:none">
-<div class="material-header">🎨 所需拼豆颜色清单<small>按此清单准备拼豆材料</small></div>
+<div class="material-header">馃帹 鎵€闇€鎷艰眴棰滆壊娓呭崟<small>鎸夋娓呭崟鍑嗗鎷艰眴鏉愭枡</small></div>
 <div class="material-body"><div class="material-grid" id="materialGrid"></div></div>
 </div>
 <div class="action-bar end">
-<button class="btn btn-primary" id="exportPngBtn">💾 导出 PNG</button>
-<button class="btn btn-outline" id="copyColorsBtn">📋 复制颜色清单</button>
-<button class="btn btn-outline" id="regenerateBtn">✨ 重新生成</button><button class="btn btn-outline" id="backBtn">🌸 返回上传</button>
-<button class="btn btn-danger" id="resetFromResultBtn">🔄 重置</button>
+<button class="btn btn-primary" id="exportPngBtn">馃捑 瀵煎嚭 PNG</button>
+<button class="btn btn-outline" id="copyColorsBtn">馃搵 澶嶅埗棰滆壊娓呭崟</button>
+<button class="btn btn-outline" id="regenerateBtn">鉁?閲嶆柊鐢熸垚</button><button class="btn btn-outline" id="backBtn">馃尭 杩斿洖涓婁紶</button>
+<button class="btn btn-danger" id="resetFromResultBtn">馃攧 閲嶇疆</button>
 </div></div>
 </div>
 <div class="toast" id="toast"></div>
 <script>
 var BP=[
-{n:"白",e:"White",h:"#FCFCFC"},{n:"奶油",e:"Cream",h:"#FFEBC2"},{n:"浅粉",e:"Light Pink",h:"#FFBCD9"},
-{n:"粉红",e:"Pink",h:"#FF99B6"},{n:"热粉红",e:"Hot Coral",h:"#FF6B6B"},{n:"红",e:"Red",h:"#E60012"},
-{n:"深红",e:"Cranberry",h:"#B31030"},{n:"覆盆子",e:"Raspberry",h:"#D84B7A"},{n:"薰衣草",e:"Lavender",h:"#C5AEE3"},
-{n:"紫",e:"Purple",h:"#864A9E"},{n:"李子紫",e:"Plum",h:"#5E317A"},{n:"长春花",e:"Periwinkle",h:"#9BB7E0"},
-{n:"蓝",e:"Blue",h:"#1E68B3"},{n:"深蓝",e:"Dark Blue",h:"#003366"},{n:"浅蓝",e:"Light Blue",h:"#7BC4F5"},
-{n:"淡蓝",e:"Pastel Blue",h:"#B5D5F0"},{n:"知更鸟蛋",e:"Robin Egg",h:"#6CD4C5"},{n:"蓝绿",e:"Turquoise",h:"#26C4C4"},
-{n:"薄荷",e:"Mint",h:"#8FD8BF"},{n:"深绿",e:"Dark Green",h:"#1B6B3A"},{n:"绿",e:"Green",h:"#3BA34A"},
-{n:"猕猴桃绿",e:"Kiwi Lime",h:"#87C84A"},{n:"青柠",e:"Lime",h:"#C5D94A"},{n:"黄",e:"Yellow",h:"#FFD700"},
-{n:"淡黄",e:"Pastel Yellow",h:"#FFECA3"},{n:"橙",e:"Orange",h:"#F7941D"},{n:"南瓜",e:"Pumpkin",h:"#F36F21"},
-{n:"切达",e:"Cheddar",h:"#E8A035"},{n:"深棕",e:"Dark Brown",h:"#5C3A21"},{n:"浅棕",e:"Light Brown",h:"#9B6B43"},
-{n:"棕褐",e:"Tan",h:"#D4A574"},{n:"沙色",e:"Sand",h:"#E8D5B0"},{n:"杏色",e:"Apricot",h:"#FDD5B0"},
-{n:"桃色",e:"Peach",h:"#FFCBA4"},{n:"灰",e:"Grey",h:"#999999"},{n:"浅灰",e:"Light Grey",h:"#CCCCCC"},
-{n:"深灰",e:"Dark Grey",h:"#666666"},{n:"黑",e:"Black",h:"#1A1A1A"},{n:"火烈鸟",e:"Flamingo",h:"#FF7B89"},
-{n:"太妃糖",e:"Butterscotch",h:"#FD9E39"}];
+{n:"鐧?,e:"White",h:"#FCFCFC"},{n:"濂舵补",e:"Cream",h:"#FFEBC2"},{n:"娴呯矇",e:"Light Pink",h:"#FFBCD9"},
+{n:"绮夌孩",e:"Pink",h:"#FF99B6"},{n:"鐑矇绾?,e:"Hot Coral",h:"#FF6B6B"},{n:"绾?,e:"Red",h:"#E60012"},
+{n:"娣辩孩",e:"Cranberry",h:"#B31030"},{n:"瑕嗙泦瀛?,e:"Raspberry",h:"#D84B7A"},{n:"钖拌。鑽?,e:"Lavender",h:"#C5AEE3"},
+{n:"绱?,e:"Purple",h:"#864A9E"},{n:"鏉庡瓙绱?,e:"Plum",h:"#5E317A"},{n:"闀挎槬鑺?,e:"Periwinkle",h:"#9BB7E0"},
+{n:"钃?,e:"Blue",h:"#1E68B3"},{n:"娣辫摑",e:"Dark Blue",h:"#003366"},{n:"娴呰摑",e:"Light Blue",h:"#7BC4F5"},
+{n:"娣¤摑",e:"Pastel Blue",h:"#B5D5F0"},{n:"鐭ユ洿楦熻泲",e:"Robin Egg",h:"#6CD4C5"},{n:"钃濈豢",e:"Turquoise",h:"#26C4C4"},
+{n:"钖勮嵎",e:"Mint",h:"#8FD8BF"},{n:"娣辩豢",e:"Dark Green",h:"#1B6B3A"},{n:"缁?,e:"Green",h:"#3BA34A"},
+{n:"鐚曠尨妗冪豢",e:"Kiwi Lime",h:"#87C84A"},{n:"闈掓煚",e:"Lime",h:"#C5D94A"},{n:"榛?,e:"Yellow",h:"#FFD700"},
+{n:"娣￠粍",e:"Pastel Yellow",h:"#FFECA3"},{n:"姗?,e:"Orange",h:"#F7941D"},{n:"鍗楃摐",e:"Pumpkin",h:"#F36F21"},
+{n:"鍒囪揪",e:"Cheddar",h:"#E8A035"},{n:"娣辨",e:"Dark Brown",h:"#5C3A21"},{n:"娴呮",e:"Light Brown",h:"#9B6B43"},
+{n:"妫曡",e:"Tan",h:"#D4A574"},{n:"娌欒壊",e:"Sand",h:"#E8D5B0"},{n:"鏉忚壊",e:"Apricot",h:"#FDD5B0"},
+{n:"妗冭壊",e:"Peach",h:"#FFCBA4"},{n:"鐏?,e:"Grey",h:"#999999"},{n:"娴呯伆",e:"Light Grey",h:"#CCCCCC"},
+{n:"娣辩伆",e:"Dark Grey",h:"#666666"},{n:"榛?,e:"Black",h:"#1A1A1A"},{n:"鐏儓楦?,e:"Flamingo",h:"#FF7B89"},
+{n:"澶绯?,e:"Butterscotch",h:"#FD9E39"}];
 BP.forEach(function(b){var r=parseInt(b.h.slice(1,3),16),g=parseInt(b.h.slice(3,5),16),v=parseInt(b.h.slice(5,7),16);b.rgb=[r,g,v]});
 var $=function(id){return document.getElementById(id)};
 var uz=$('uploadZone'),fi=$('fileInput'),up=$('uploadPreview'),rb=$('removeImageBtn'),bb=$('browseBtn'),ui=$('uploadInfo');
@@ -239,7 +239,7 @@ function st(m,d){d=d||2500;tt.textContent=m;tt.classList.add('show');clearTimeou
 function sv(v){document.querySelectorAll('.view').forEach(function(x){x.classList.remove('active')});v.classList.add('active')}
 function gRt(){try{var d=JSON.parse(localStorage.getItem('pixelBeadKey'));if(!d||!d.expiresAt)return 0;var r=d.expiresAt-Date.now();return Math.max(0,r)}catch(e){return 0}}
 function fTm(ms){var h=Math.floor(ms/3600000),m=Math.floor((ms%3600000)/60000);if(h>0)return h+'h'+m+'m';return m+'min'}
-function us(){if(iv){var r=gRt();as_.className='status-dot verified';if(r>0){as_.innerHTML='<span class="dot"></span>已验证('+fTm(r)+')'}else{as_.innerHTML='<span class="dot"></span>已验证'}}else{as_.className='status-dot unverified',as_.innerHTML='<span class="dot"></span>未验证'}src?(fs.className='status-dot uploaded',fs.innerHTML='<span class="dot"></span>'+(src.dn||'已上传')):(fs.className='status-dot idle',fs.innerHTML='<span class="dot"></span>未上传');gb.disabled=!(src&&iv)}
+function us(){if(iv){var r=gRt();as_.className='status-dot verified';if(r>0){as_.innerHTML='<span class="dot"></span>宸查獙璇?'+fTm(r)+')'}else{as_.innerHTML='<span class="dot"></span>宸查獙璇?}}else{as_.className='status-dot unverified',as_.innerHTML='<span class="dot"></span>鏈獙璇?}src?(fs.className='status-dot uploaded',fs.innerHTML='<span class="dot"></span>'+(src.dn||'宸蹭笂浼?)):(fs.className='status-dot idle',fs.innerHTML='<span class="dot"></span>鏈笂浼?);gb.disabled=!(src&&iv)}
 uz.addEventListener('click',function(e){if(e.target.closest('#removeImageBtn'))return;document.getElementById('fileInput').click()});
 // bb click handled by onclick attribute
 uz.addEventListener('dragover',function(e){e.preventDefault();e.dataTransfer.dropEffect='copy';uz.classList.add('drag-over')});
@@ -247,12 +247,12 @@ uz.addEventListener('dragleave',function(e){if(!uz.contains(e.relatedTarget))uz.
 uz.addEventListener('drop',function(e){e.preventDefault();uz.classList.remove('drag-over');if(e.dataTransfer.files.length>0)hf(e.dataTransfer.files[0])});
 fi.addEventListener('change',function(e){if(e.target.files.length>0)hf(e.target.files[0])});
 rb.addEventListener('click',function(e){e.stopPropagation();rm()});
-function hf(f){if(!f.type.startsWith('image/')){st('⚠️ 请上传图片');return}
+function hf(f){if(!f.type.startsWith('image/')){st('鈿狅笍 璇蜂笂浼犲浘鐗?);return}
 var r=new FileReader();r.onload=function(e){var img=new Image();
 img.onload=function(){src=img;src.dn=f.name.length>15?f.name.slice(0,12)+'...':f.name;
 up.src=e.target.result;uz.classList.add('has-image');
-ui.innerHTML='<strong>'+img.naturalWidth+'×'+img.naturalHeight+'</strong> 像素 | <strong>'+(f.size/1024).toFixed(1)+' KB</strong>';
-us();st('✅ 图片已上传')};
+ui.innerHTML='<strong>'+img.naturalWidth+'脳'+img.naturalHeight+'</strong> 鍍忕礌 | <strong>'+(f.size/1024).toFixed(1)+' KB</strong>';
+us();st('鉁?鍥剧墖宸蹭笂浼?)};
 img.src=e.target.result};r.readAsDataURL(f)}
 function rm(){src=null;bcd=null;cbd=null;uz.classList.remove('has-image');up.src='';fi.value='';ui.innerHTML='';us()}
 function cd(a,b){var dr=a[0]-b[0],dg=a[1]-b[1],db=a[2]-b[2];return dr*dr+dg*dg+db*db}
@@ -294,24 +294,24 @@ ctx.strokeStyle='rgba(0,0,0,0.04)';ctx.lineWidth=0.5;
 for(var x=0;x<=w;x++){var lx=pd+lw+x*cs;ctx.beginPath();ctx.moveTo(lx,pd+lh);ctx.lineTo(lx,pd+lh+h*cs);ctx.stroke()}
 for(var y=0;y<=h;y++){var ly=pd+lh+y*cs;ctx.beginPath();ctx.moveTo(pd+lw,ly);ctx.lineTo(pd+lw+w*cs,ly);ctx.stroke()}
 var be=rb2.querySelector('.result-empty');if(be)be.remove();
-rgs.textContent=w+'×'+h;var total=0;for(var hex in cu){if(cu.hasOwnProperty(hex))total+=cu[hex]};
+rgs.textContent=w+'脳'+h;var total=0;for(var hex in cu){if(cu.hasOwnProperty(hex))total+=cu[hex]};
 rtb.textContent=total;rcc.textContent=Object.keys(cu).length;rs.style.display='flex';
-rml(cu);ms.style.display='block';sv(vr);us();st('✅ 已生成 '+w+'×'+h+' 拼豆图')}
+rml(cu);ms.style.display='block';sv(vr);us();st('鉁?宸茬敓鎴?'+w+'脳'+h+' 鎷艰眴鍥?)}
 function rml(cu){mg.innerHTML='';
 var sk=Object.keys(cu).sort(function(a,b){return cu[b]-cu[a]});
 for(var i=0;i<sk.length;i++){var hex=sk[i],cnt=cu[hex];
 var bd=BP.find(function(c){return c.h===hex});
 var nm=bd?bd.n+' ('+bd.e+')':hex;
 var ch=document.createElement('div');ch.className='material-chip';
-ch.innerHTML='<span class="material-swatch" style="background:'+hex+'"></span>'+nm+' <span class="count">×<strong>'+cnt+'</strong></span>';
+ch.innerHTML='<span class="material-swatch" style="background:'+hex+'"></span>'+nm+' <span class="count">脳<strong>'+cnt+'</strong></span>';
 mg.appendChild(ch)}}
 vkb.addEventListener('click',function(){vk()});
 ki.addEventListener('keydown',function(e){if(e.key==='Enter')vk()});
 function vk(){verifyKey(ki.value.trim())}
-function verifyKey(key){if(!key){st("\u26a0\ufe0f \u8bf7\u8f93\u5165\u5bc6\u94a5");return}var k=key.trim().toUpperCase();gb.disabled=true;gb.textContent="\u23f3 \u9a8c\u8bc1\u4e2d...";vkb.disabled=true;vkb.textContent="\u9a8c\u8bc1\u4e2d...";fetch(API_VERIFY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:k})}).then(function(r){return r.json()}).then(function(d){console.log("[verify] Response:",d);if(d.debug)console.log("[verify] Debug:",JSON.stringify(d.debug));gb.disabled=!(src&&iv);gb.textContent="\u2728 \u751f\u6210\u62fc\u8c46\u56fe\u6848";vkb.disabled=false;vkb.textContent="\u9a8c\u8bc1";if(d.valid){iv=true;var now=Date.now(),expiry=now+86400000;try{localStorage.setItem("pixelBeadKey",JSON.stringify({key:k,verifiedAt:now,expiresAt:expiry}))}catch(e){}ki.className="success";st("\U0001f389 \u5bc6\u94a5\u9a8c\u8bc1\u6210\u529f\uff01\u6709\u6548\u671f\u81f3 "+(new Date(expiry).toLocaleString()));us();if(window.vT)clearInterval(window.vT);window.vT=setInterval(function(){var r=gRt();if(r<=0){clearInterval(window.vT);iv=false;try{localStorage.removeItem("pixelBeadKey")}catch(e){}us();st("\u23f0 \u5bc6\u94a5\u5df2\u8fc7\u671f");return}us()},60000)}else{iv=false;ki.className="error";var em="";var dbg=d.debug||{};if(d.reason==="invalid_key"){em="\u274c \u5bc6\u94a5\u65e0\u6548\\nk="+dbg.normalizedKey+" | \u67e5\u8be2:"+dbg.whitelistKey+"="+dbg.whitelistValue+" | \u5907\u7528:"+(dbg.whitelistFallbackKey||"-")+"="+(dbg.whitelistFallbackValue==null?"null":dbg.whitelistFallbackValue)+" | KV:"+dbg.kvUrlPrefix}else if(d.reason==="expired"){em="\u274c \u5bc6\u94a5\u5df2\u8fc7\u671f\uff0c\u8bf7\u91cd\u65b0\u8d2d\u4e70"}else if(d.reason==="kv_error"){em="\u26a0\ufe0f \u9a8c\u8bc1\u670d\u52a1\u5f02\u5e38\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\\n"+d.detail}else{em="\u274c \u9a8c\u8bc1\u5931\u8d25"};st(em);setTimeout(function(){ki.className=""},500)}}).catch(function(e){console.error("[verify] Network error:",e);gb.disabled=!(src&&iv);gb.textContent="\u2728 \u751f\u6210\u62fc\u8c46\u56fe\u6848";vkb.disabled=false;vkb.textContent="\u9a8c\u8bc1";st("\u26a0\ufe0f \u9a8c\u8bc1\u670d\u52a1\u6682\u65f6\u4e0d\u53ef\u7528\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5")})}function checkLocalSession(){try{var d=JSON.parse(localStorage.getItem('pixelBeadKey'));if(!d||!d.expiresAt)return;var r=d.expiresAt-Date.now();if(r>0){iv=true;ki.value=d.key||'';ki.className='success';us();if(window.vT)clearInterval(window.vT);window.vT=setInterval(function(){var r2=gRt();if(r2<=0){clearInterval(window.vT);iv=false;try{localStorage.removeItem('pixelBeadKey')}catch(e){}us();st('⏰ 密钥已过期');return}us()},60000)}else{try{localStorage.removeItem('pixelBeadKey')}catch(e){}iv=false;us()}}catch(e){}}
-function reVerify(){iv=false;try{localStorage.removeItem('pixelBeadKey')}catch(e){}ki.value='';ki.className='';if(window.vT)clearInterval(window.vT);us();ki.focus();st('🔄 请重新输入密钥',3000)}
-gb.addEventListener('click',function(){if(!src){st('⚠️ 请先上传图片');return}if(!iv){st('⚠️ 请先验证密钥');return}pi()});
-var regb=$('regenerateBtn');regb.addEventListener('click',function(){if(!src){st('⚠️ 请先上传图片');sv(vu);return}pi()});
+function verifyKey(key){if(!key){st("\u26a0\ufe0f \u8bf7\u8f93\u5165\u5bc6\u94a5");return}var k=key.trim().toUpperCase();gb.disabled=true;gb.textContent="\u23f3 \u9a8c\u8bc1\u4e2d...";vkb.disabled=true;vkb.textContent="\u9a8c\u8bc1\u4e2d...";fetch(API_VERIFY,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({key:k})}).then(function(r){return r.json()}).then(function(d){console.log("[verify] Response:",d);if(d.debug)console.log("[verify] Debug:",JSON.stringify(d.debug));gb.disabled=!(src&&iv);gb.textContent="\u2728 \u751f\u6210\u62fc\u8c46\u56fe\u6848";vkb.disabled=false;vkb.textContent="\u9a8c\u8bc1";if(d.setup){ki.className="success";st("\U0001f4a1 \u6570\u636e\u5e93\u521d\u59cb\u5316\u6210\u529f\uff01\u5df2\u6dfb\u52a0 "+(d.initializedKeys?d.initializedKeys.length:0)+" \u4e2a\u5bc6\u94a5\u5230\u767d\u540d\u5355");iv=false;setTimeout(function(){ki.className=""},500);return}if(d.valid){iv=true;var now=Date.now(),expiry=now+86400000;try{localStorage.setItem("pixelBeadKey",JSON.stringify({key:k,verifiedAt:now,expiresAt:expiry}))}catch(e){}ki.className="success";var msg=d.firstUse?"\U0001f389 \u5bc6\u94a5\u6fc0\u6d3b\u6210\u529f\uff0c24\u5c0f\u65f6\u5185\u6709\u6548\uff01":"\u2705 \u5bc6\u94a5\u9a8c\u8bc1\u6210\u529f\uff01\u6709\u6548\u671f\u81f3 "+(new Date(expiry).toLocaleString());st(msg);us();if(window.vT)clearInterval(window.vT);window.vT=setInterval(function(){var r=gRt();if(r<=0){clearInterval(window.vT);iv=false;try{localStorage.removeItem("pixelBeadKey")}catch(e){}us();st("\u23f0 \u5bc6\u94a5\u5df2\u8fc7\u671f");return}us()},60000)}else{iv=false;ki.className="error";var em="";var dbg=d.debug||{};if(d.reason==="echo"){em="\U0001f50d \u8bca\u65ad\u4fe1\u606f\\nKV\u6570\u636e\u5e93URL: "+(dbg.kvUrlFull||"(empty)")+"\\n\u767d\u540d\u5355\u952e: "+(dbg.scannedKeys?dbg.scannedKeys.join(", "):"(\u6ca1\u6709)");console.log("[echo] Full debug:",JSON.stringify(dbg))}else if(d.reason==="invalid_key"){em="\u274c \u5bc6\u94a5\u65e0\u6548\\n\u67e5\u8be2\u952e\u540d: "+dbg.whitelistKey+"="+dbg.whitelistValue+" | \u5907\u7528:"+dbg.whitelistFallbackKey+"="+(dbg.whitelistFallbackValue==null?"null":dbg.whitelistFallbackValue)+" | \u6570\u636e\u5e93\u6240\u6709\u952e: "+(dbg.scannedKeys?dbg.scannedKeys.slice(0,5).join(", "):"\u67e5\u8be2\u5931\u8d25")+"\\nKV URL: "+(dbg.kvUrlFull||"(empty)")}else if(d.reason==="expired"){em="\u274c \u5bc6\u94a5\u5df2\u8fc7\u671f\uff0c\u8bf7\u91cd\u65b0\u8d2d\u4e70"}else if(d.reason==="kv_error"){em="\u26a0\ufe0f \u9a8c\u8bc1\u670d\u52a1\u5f02\u5e38\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5\\n"+d.detail}else{em="\u274c \u9a8c\u8bc1\u5931\u8d25"};if(d.reason!=="echo")st(em);setTimeout(function(){ki.className=""},500)}}).catch(function(e){console.error("[verify] Network error:",e);gb.disabled=!(src&&iv);gb.textContent="\u2728 \u751f\u6210\u62fc\u8c46\u56fe\u6848";vkb.disabled=false;vkb.textContent="\u9a8c\u8bc1";st("\u26a0\ufe0f \u9a8c\u8bc1\u670d\u52a1\u6682\u65f6\u4e0d\u53ef\u7528\uff0c\u8bf7\u7a0d\u540e\u91cd\u8bd5")})}function checkLocalSession(){try{var d=JSON.parse(localStorage.getItem('pixelBeadKey'));if(!d||!d.expiresAt)return;var r=d.expiresAt-Date.now();if(r>0){iv=true;ki.value=d.key||'';ki.className='success';us();if(window.vT)clearInterval(window.vT);window.vT=setInterval(function(){var r2=gRt();if(r2<=0){clearInterval(window.vT);iv=false;try{localStorage.removeItem('pixelBeadKey')}catch(e){}us();st('鈴?瀵嗛挜宸茶繃鏈?);return}us()},60000)}else{try{localStorage.removeItem('pixelBeadKey')}catch(e){}iv=false;us()}}catch(e){}}
+function reVerify(){iv=false;try{localStorage.removeItem('pixelBeadKey')}catch(e){}ki.value='';ki.className='';if(window.vT)clearInterval(window.vT);us();ki.focus();st('馃攧 璇烽噸鏂拌緭鍏ュ瘑閽?,3000)}
+gb.addEventListener('click',function(){if(!src){st('鈿狅笍 璇峰厛涓婁紶鍥剧墖');return}if(!iv){st('鈿狅笍 璇峰厛楠岃瘉瀵嗛挜');return}pi()});
+var regb=$('regenerateBtn');regb.addEventListener('click',function(){if(!src){st('鈿狅笍 璇峰厛涓婁紶鍥剧墖');sv(vu);return}pi()});
 epb.addEventListener('click',function(){if(!bcd||!cbd)return;
 var w=cbd.width,h=cbd.height,cs=24,pd=16;var pw=w*cs+pd*2,ph=h*cs+pd*2;
 var items=Object.keys(bcd).sort(function(a,b){return bcd[b]-bcd[a]});
@@ -320,12 +320,12 @@ var tw=Math.max(pw,lw+pd*2),th=ph+lh+80;
 var ec=document.createElement('canvas');ec.width=tw;ec.height=th;
 var ctx=ec.getContext('2d');ctx.fillStyle='#fff';ctx.fillRect(0,0,tw,th);
 ctx.fillStyle='#4A3A3A';ctx.font='bold 18px Nunito,sans-serif';ctx.textAlign='center';
-ctx.fillText('🧩 拼豆坐标图 Perler Bead Map',tw/2,28);
+ctx.fillText('馃З 鎷艰眴鍧愭爣鍥?Perler Bead Map',tw/2,28);
 ctx.drawImage(rbc,Math.max(0,(tw-pw)/2),44);
 var total=0;items.forEach(function(k){total+=bcd[k]});
 ctx.fillStyle='#8A7A7A';ctx.font='11px Nunito,sans-serif';ctx.textAlign='center';
-ctx.fillText(w+'×'+h+'  |  '+total+' 珠  |  '+items.length+' 色',tw/2,ph+64);
-var ty=ph+90;ctx.fillStyle='#4A3A3A';ctx.font='bold 14px Nunito,sans-serif';ctx.textAlign='left';ctx.fillText('颜色清单:',16,ty);
+ctx.fillText(w+'脳'+h+'  |  '+total+' 鐝? |  '+items.length+' 鑹?,tw/2,ph+64);
+var ty=ph+90;ctx.fillStyle='#4A3A3A';ctx.font='bold 14px Nunito,sans-serif';ctx.textAlign='left';ctx.fillText('棰滆壊娓呭崟:',16,ty);
 var iw=(tw-pd*2)/5;
 items.forEach(function(hex,i){var col=i%5,row=Math.floor(i/5);
 var x=pd+col*iw,y=ty+8+row*ih;
@@ -333,29 +333,29 @@ ctx.fillStyle=hex;ctx.beginPath();ctx.arc(x+8,y+10,6,0,Math.PI*2);ctx.fill();
 ctx.strokeStyle='rgba(0,0,0,0.15)';ctx.lineWidth=0.5;ctx.stroke();
 var bead=BP.find(function(c){return c.h===hex});
 ctx.fillStyle='#4A3A3A';ctx.font='10px Nunito,sans-serif';ctx.textAlign='left';
-ctx.fillText((bead?bead.n+' ':'')+bcd[hex]+'颗',x+18,y+14)});
-var al=document.createElement('a');al.download='拼豆坐标图_'+w+'x'+h+'.png';al.href=ec.toDataURL('image/png');al.click();st('✅ PNG 导出成功')});
+ctx.fillText((bead?bead.n+' ':'')+bcd[hex]+'棰?,x+18,y+14)});
+var al=document.createElement('a');al.download='鎷艰眴鍧愭爣鍥綺'+w+'x'+h+'.png';al.href=ec.toDataURL('image/png');al.click();st('鉁?PNG 瀵煎嚭鎴愬姛')});
 ccb.addEventListener('click',function(){if(!bcd)return;
 var items=Object.keys(bcd).sort(function(a,b){return bcd[b]-bcd[a]});
-var txt='🧩 拼豆颜色清单\n'+'='.repeat(30)+'\n\n';
-items.forEach(function(hex,i){var bd=BP.find(function(c){return c.h===hex});var nm=bd?bd.n+' ('+bd.e+')':hex;txt+=(i+1)+'. '+nm+' — '+bcd[hex]+' 颗\n'});
-var total=0;items.forEach(function(k){total+=bcd[k]});txt+='\n总计: '+total+' 颗珠, '+items.length+' 种颜色';
-navigator.clipboard.writeText(txt).then(function(){st('📋 已复制！')})
-.catch(function(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);st('📋 已复制！')})});
+var txt='馃З 鎷艰眴棰滆壊娓呭崟\n'+'='.repeat(30)+'\n\n';
+items.forEach(function(hex,i){var bd=BP.find(function(c){return c.h===hex});var nm=bd?bd.n+' ('+bd.e+')':hex;txt+=(i+1)+'. '+nm+' 鈥?'+bcd[hex]+' 棰梊n'});
+var total=0;items.forEach(function(k){total+=bcd[k]});txt+='\n鎬昏: '+total+' 棰楃彔, '+items.length+' 绉嶉鑹?;
+navigator.clipboard.writeText(txt).then(function(){st('馃搵 宸插鍒讹紒')})
+.catch(function(){var ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);st('馃搵 宸插鍒讹紒')})});
 bkb.addEventListener('click',function(){sv(vu);us()});
 function fr(){if(window.vT)clearInterval(window.vT);iv=false;try{localStorage.removeItem('pixelBeadKey')}catch(e){}rm();gw.value=24;gh.value=24;gwv.textContent='24';ghv.textContent='24';
-mc.value=30;mcv.textContent='30';tb.checked=false;tbl.textContent='关闭';ka.checked=true;kal.textContent='开启';
+mc.value=30;mcv.textContent='30';tb.checked=false;tbl.textContent='鍏抽棴';ka.checked=true;kal.textContent='寮€鍚?;
 rbc.style.display='none';roc.style.display='none';rs.style.display='none';ms.style.display='none';
-ro.innerHTML='<div class="result-empty"><span class="icon">🖼️</span><p>暂无图片</p></div>';
-rb2.innerHTML='<div class="result-empty"><span class="icon">🧩</span><p>请先生成图案</p></div><div class="loading-overlay" id="resultLoading"><div class="spinner"></div></div>';
-sv(vu);st('🔄 已重置')}
+ro.innerHTML='<div class="result-empty"><span class="icon">馃柤锔?/span><p>鏆傛棤鍥剧墖</p></div>';
+rb2.innerHTML='<div class="result-empty"><span class="icon">馃З</span><p>璇峰厛鐢熸垚鍥炬</p></div><div class="loading-overlay" id="resultLoading"><div class="spinner"></div></div>';
+sv(vu);st('馃攧 宸查噸缃?)}
 rbb.addEventListener('click',fr);rfrb.addEventListener('click',fr);
 gw.addEventListener('input',function(){var w=parseInt(gw.value);gwv.textContent=w;if(ka.checked&&src){var sw=src.naturalWidth,sh=src.naturalHeight;var h=Math.max(8,Math.round(w*sh/sw));gh.value=h;ghv.textContent=h}});
 gh.addEventListener('input',function(){var h=parseInt(gh.value);ghv.textContent=h;if(ka.checked&&src){var sw=src.naturalWidth,sh=src.naturalHeight;var w=Math.max(8,Math.round(h*sw/sh));gw.value=w;gwv.textContent=w}});
 mc.addEventListener('input',function(){mcv.textContent=mc.value});
-tb.addEventListener('change',function(){tbl.textContent=tb.checked?'开启':'关闭'});
-ka.addEventListener('change',function(){kal.textContent=ka.checked?'开启':'关闭';if(ka.checked&&src){gw.dispatchEvent(new Event('input'))}});
-checkLocalSession();us();st('✨ 欢迎使用！请输入密钥开始制作',3000);
+tb.addEventListener('change',function(){tbl.textContent=tb.checked?'寮€鍚?:'鍏抽棴'});
+ka.addEventListener('change',function(){kal.textContent=ka.checked?'寮€鍚?:'鍏抽棴';if(ka.checked&&src){gw.dispatchEvent(new Event('input'))}});
+checkLocalSession();us();st('鉁?娆㈣繋浣跨敤锛佽杈撳叆瀵嗛挜寮€濮嬪埗浣?,3000);
 </script>
 </body>
 </html>
