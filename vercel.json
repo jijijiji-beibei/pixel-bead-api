@@ -1,6 +1,9 @@
-{
+﻿{
   "functions": {
     "api/verify.js": {
+      "maxDuration": 10
+    },
+    "api/activate.js": {
       "maxDuration": 10
     }
   }
