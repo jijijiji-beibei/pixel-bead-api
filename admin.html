@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>密钥管理 - 拼豆坐标图生成器</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#6c5ce7;--s:#00b894;--bg:#f8f9fc;--card:#fff;--t:#2d3436;--t2:#636e72;--b:#dfe6e9;--r:12px}
+body{font-family:Inter,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;padding:24px}
+.header{max-width:800px;margin:0 auto 24px;display:flex;align-items:center;justify-content:space-between}
+.header h1{font-size:1.3em;font-weight:700;color:var(--p)}
+.header a{color:var(--t2);text-decoration:none;font-size:0.9em}
+.container{max-width:800px;margin:0 auto}
+.card{background:var(--card);border-radius:var(--r);padding:24px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,0.06)}
+.card h2{font-size:1em;font-weight:600;margin-bottom:16px;color:var(--t)}
+.form-row{display:flex;gap:12px;margin-bottom:12px;align-items:end}
+.form-row label{font-size:0.85em;color:var(--t2);display:block;margin-bottom:4px}
+input{padding:8px 12px;border:1.5px solid var(--b);border-radius:8px;font-size:0.9em;width:100%;outline:none}
+input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(108,92,231,0.1)}
+.form-group{flex:1}
+.btn{padding:8px 20px;border:none;border-radius:8px;font-size:0.9em;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+.btn:disabled{opacity:0.5;cursor:not-allowed}
+.btn-primary{background:var(--p);color:#fff}
+.btn-success{background:var(--s);color:#fff}
+.btn-outline{background:transparent;border:1.5px solid var(--b);color:var(--t2)}
+.result-box{background:#f8f9fc;border-radius:8px;padding:12px;margin-top:12px;max-height:300px;overflow-y:auto;font-family:monospace;font-size:0.85em;white-space:pre-wrap}
+.stats{display:flex;gap:16px;margin:12px 0}
+.stat{padding:12px 16px;border-radius:8px;background:#f8f9fc;flex:1;text-align:center}
+.stat-num{font-size:1.5em;font-weight:700;color:var(--p)}
+.stat-label{font-size:0.8em;color:var(--t2)}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:0.9em;opacity:0;z-index:100}
+.toast.show{opacity:1}
+.login-box{max-width:360px;margin:80px auto;text-align:center}
+.hidden{display:none}
+.auth-error{color:#e74c3c;font-size:0.85em}
+.badge{display:inline-block;background:var(--s);color:#fff;font-size:0.75em;padding:2px 8px;border-radius:4px;margin-left:6px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1 style="cursor:pointer" onclick="logout()">🔑 密钥管理</h1>
+<a href="/">← 返回拼豆工具</a>
+</div>
+
+<div id="loginView" class="login-box card">
+<h2>管理员登录</h2>
+<input type="password" id="adminPwd" placeholder="请输入管理员密码" style="margin-bottom:12px" onkeydown="if(event.key==='Enter')login()">
+<button class="btn btn-primary" id="loginBtn" onclick="login()" style="width:100%;justify-content:center">登录</button>
+<div class="auth-error hidden" id="authError">密码错误</div>
+</div>
+
+<div id="adminView" class="hidden">
+
+<div class="card">
+<h2>🆕 批量生成密钥</h2>
+<p style="font-size:0.85em;color:var(--t2);margin-bottom:12px">生成的密钥会同时写入 Upstash KV（白名单），复制后粘贴到 vfkphp 后台导入。</p>
+<div class="form-row">
+<div class="form-group">
+<label>数量 (1-100)</label>
+<input type="number" id="keyCount" value="10" min="1" max="100">
+</div>
+<div class="form-group">
+<label>密钥前缀</label>
+<input type="text" id="keyPrefix" value="PEBBLE" placeholder="如 PEBBLE">
+</div>
+</div>
+<button class="btn btn-primary" id="genBtn" onclick="generate()">🚀 生成密钥</button>
+<div id="genResult" class="hidden">
+<div class="stats" id="genStats"></div>
+<label style="font-size:0.85em;color:var(--t2);font-weight:600">生成的密钥（可复制到 vfkphp 批量导入）：</label>
+<div class="result-box" id="genOutput"></div>
+<div style="margin-top:8px;display:flex;gap:8px">
+<button class="btn btn-sm btn-success" onclick="copyKeys()">📋 复制</button>
+<button class="btn btn-sm btn-outline" onclick="downloadKeys()">⬇ 下载TXT</button>
+</div>
+</div>
+</div>
+
+<div class="card">
+<h2>📋 已有密钥 <span class="badge" id="keyCountBadge">?</span></h2>
+<button class="btn btn-sm btn-outline" onclick="scanKeys()" style="margin-bottom:12px">🔄 刷新</button>
+<div id="keyList" style="font-family:monospace;font-size:0.85em;max-height:400px;overflow-y:auto"></div>
+</div>
+
+</div>
+</div>
+
+<div class="toast" id="toast"></div>
+<script>
+var API_PREFIX = window.location.protocol==="file:" ? "https://pixel-bead-api-rp8a.vercel.app" : "";
+var token = "";
+var generatedKeys = [];
+
+function $(id){return document.getElementById(id)}
+function toast(m){var t=$("toast");t.textContent=m;t.classList.add("show");setTimeout(function(){t.classList.remove("show")},2500)}
+
+function login(){
+  var pwd = $("adminPwd").value;
+  if(!pwd){toast("请输入密码");return}
+  $("loginBtn").disabled=true;$("loginBtn").textContent="验证中...";
+  $("authError").classList.add("hidden");
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", API_PREFIX + "/api/admin/generate", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onload = function(){
+    var d = JSON.parse(xhr.responseText);
+    if(d.success || d.error==="kv_error"){
+      token = pwd;
+      $("loginView").classList.add("hidden");
+      $("adminView").classList.remove("hidden");
+      toast("登录成功");
+      scanKeys();
+    } else if(d.error==="auth_failed"){
+      $("authError").classList.remove("hidden");
+    } else {
+      toast("验证失败: " + d.message);
+    }
+    $("loginBtn").disabled=false;$("loginBtn").textContent="登录";
+  };
+  xhr.onerror = function(){toast("网络错误");$("loginBtn").disabled=false;$("loginBtn").textContent="登录"};
+  xhr.send(JSON.stringify({password:pwd,count:1}));
+}
+
+function generate(){
+  var count = parseInt($("keyCount").value)||10;
+  var prefix = ($("keyPrefix").value.trim().toUpperCase())||"PEBBLE";
+  $("genBtn").disabled=true;$("genBtn").textContent="生成中...";
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", API_PREFIX + "/api/admin/generate", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onload = function(){
+    var d = JSON.parse(xhr.responseText);
+    if(d.success || d.successCount>0){
+      generatedKeys = d.keys;
+      $("genResult").classList.remove("hidden");
+      $("genStats").innerHTML = "<div class='stat'><div class='stat-num'>"+d.successCount+"</div><div class='stat-label'>成功</div></div><div class='stat'><div class='stat-num'>"+d.failCount+"</div><div class='stat-label'>失败</div></div>";
+      $("genOutput").textContent = d.importText || "(无)";
+      toast(d.message);
+      setTimeout(scanKeys, 500);
+    } else {
+      toast("生成失败: " + d.message);
+    }
+    $("genBtn").disabled=false;$("genBtn").textContent="🚀 生成密钥";
+  };
+  xhr.onerror = function(){toast("网络错误");$("genBtn").disabled=false;$("genBtn").textContent="🚀 生成密钥"};
+  xhr.send(JSON.stringify({password:token,count:count,prefix:prefix}));
+}
+
+function copyKeys(){
+  var text = $("genOutput").textContent;
+  if(!text||text==="(无)"){toast("没有可复制的密钥");return}
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(text).then(function(){toast("✅ 已复制 "+text.split("\n").length+" 个密钥")});
+  } else {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    toast("✅ 已复制");
+  }
+}
+
+function downloadKeys(){
+  var text = $("genOutput").textContent;
+  if(!text||text==="(无)"){toast("没有可下载的密钥");return}
+  var blob = new Blob([text], {type:"text/plain"});
+  var a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "keys_"+Date.now()+".txt";
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast("✅ 已下载");
+}
+
+function scanKeys(){
+  var xhr = new XMLHttpRequest();
+  xhr.open("POST", API_PREFIX + "/api/verify", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onload = function(){
+    var d = JSON.parse(xhr.responseText);
+    var keys = (d.debug && (d.debug.allDbKeys || d.debug.scannedKeys)) || [];
+    var valid = keys.filter(function(k){return k.indexOf("valid:")===0}).map(function(k){return k.replace("valid:","")});
+    $("keyCountBadge").textContent = valid.length || "0";
+    if(valid.length>0){
+      var html = "";
+      for(var i=0;i<valid.length;i++){
+        html += "<div style='padding:4px 0;border-bottom:1px solid #eee'>"+valid[i]+" ✅</div>";
+      }
+      $("keyList").innerHTML = html;
+    } else {
+      $("keyList").innerHTML = "<div style='color:#999'>暂无密钥</div>";
+    }
+  };
+  xhr.onerror = function(){$("keyList").innerHTML = "<div style='color:#e74c3c'>扫描失败</div>"};
+  xhr.send(JSON.stringify({key:"ECHO_TEST"}));
+}
+
+function logout(){
+  if(confirm("退出管理后台？")){
+    token="";
+    $("loginView").classList.remove("hidden");
+    $("adminView").classList.add("hidden");
+    $("adminPwd").value="";
+  }
+}
+</script>
+</body>
+</html>
